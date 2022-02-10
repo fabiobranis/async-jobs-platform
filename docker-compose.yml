@@ -1,0 +1,57 @@
+version: '3.7'
+services:
+  check-api:
+    build: ./check-api
+    ports:
+      - 3000:3000
+    depends_on:
+      - postgres
+      - job-runner
+    networks:
+      - app-network
+    environment:
+      - PG_CONNECTION_STRING=postgresql://check:check@postgres:5432/check
+      - JOB_RUNNER_URI=http://job-runner:3001/v1/job
+  job-runner:
+    build: ./job-runner
+    ports:
+      - 3001:3001
+    depends_on:
+      - redis
+    networks:
+      - app-network
+    environment:
+      - REDIS_CONNECTION_STRING=redis://redis:6379
+  job-runner-consumer:
+    build:
+      context: ./job-runner
+      dockerfile: Dockerfile-consumer
+    depends_on:
+      - redis
+      - job-runner
+    networks:
+      - app-network
+    environment:
+      - REDIS_CONNECTION_STRING=redis://redis:6379
+      - CHECK_API_URI=http://check-api:3000/v1/check-definitions
+  postgres:
+    image: postgres:10.5
+    restart: always
+    environment:
+      - POSTGRES_USER=check
+      - POSTGRES_PASSWORD=check
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+    networks:
+      - app-network
+  redis:
+    image: redis:3.2.5
+    ports:
+      - '6379:6379'
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge

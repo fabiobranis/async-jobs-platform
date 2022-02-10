@@ -1,0 +1,36 @@
+checkDefinitions:
+  checkA:
+    name: check-a
+    frequency: 10000
+    activated: true
+    checkType: api
+    requestMethod: GET
+    requestUrl: http://foo/bar
+  checkB:
+    name: check-b
+    frequency: 100000
+    activated: true
+    checkType: api
+    requestMethod: POST
+    requestUrl: http://foo/bar
+  checkC:
+    name: check-c
+    frequency: 20000
+    activated: true
+    checkType: browser
+    requestUrl: http://foo/bar
+    script: 'something that is not a js script'
+  checkD:
+    name: check-d
+    frequency: 50000
+    activated: true
+    checkType: browser
+    requestUrl: http://foo/bar
+    script: 'another thing that is not a js script'
+  checkE:
+    name: check-e
+    frequency: 500000
+    activated: true
+    checkType: api
+    requestMethod: PUT
+    requestUrl: http://foo/bar
