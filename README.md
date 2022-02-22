@@ -1,6 +1,6 @@
-# Check platform
+# Async jobs platform
 
-This is a platform which allows you to register scheduled checks and monitor the checks through the database.
+This is a platform which allows you to register scheduled jobs and monitor the checks through the database.
 
 ## How to execute this
 
